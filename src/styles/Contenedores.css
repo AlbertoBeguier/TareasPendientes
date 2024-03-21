@@ -80,7 +80,7 @@ button {
     margin: 10px auto; /* Reduce el margen para móviles */
   }
   .titulo-tareas {
-    font-size: 0.5rem; /* Ajusta el tamaño del texto para móviles */
+    font-size: 0.6rem; /* Ajusta el tamaño del texto para móviles */
     text-align: center; /* Alinea el texto al centro para móviles */
   }
   .task-filters {
