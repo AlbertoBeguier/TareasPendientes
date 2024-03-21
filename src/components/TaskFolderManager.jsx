@@ -111,6 +111,7 @@ export function TaskFolderManager({
               src="/selector-color.png" // Asegúrate de cambiar esto por la ruta correcta de tu imagen
               alt="Seleccionar color"
               onClick={triggerColorPicker}
+              onTouchEnd={triggerColorPicker}
               style={{
                 cursor: "pointer" /* Estilos adicionales para la imagen */,
               }}
