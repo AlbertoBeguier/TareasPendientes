@@ -137,7 +137,9 @@ export function TaskFolderManager({
               />
             </button>
 
-            {folderExists && <span>La carpeta ya existe.</span>}
+            {folderExists && (
+              <span className="advertencia-carpeta">La carpeta ya existe.</span>
+            )}
           </span>
         </div>
       </div>

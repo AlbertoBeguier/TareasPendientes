@@ -188,3 +188,9 @@
 .imagen-selector-color:hover {
   transform: scale(1.2) rotate(360deg); /* Añade un efecto de crecimiento y rotación */
 }
+
+.advertencia-carpeta {
+  color: orangered;
+  font-weight: 600;
+  margin-left: 30px;
+}
