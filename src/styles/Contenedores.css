@@ -80,7 +80,8 @@ button {
     margin: 10px auto; /* Reduce el margen para móviles */
   }
   .titulo-tareas {
-    font-size: 0.8rem; /* Ajusta el tamaño del texto para móviles */
+    font-size: 0.5rem; /* Ajusta el tamaño del texto para móviles */
+    text-align: center; /* Alinea el texto al centro para móviles */
   }
   .task-filters {
     flex-direction: column; /* Cambia la dirección a columna para los filtros en móviles */
@@ -90,6 +91,6 @@ button {
 /* Media Query para PCs (pantallas grandes) */
 @media (min-width: 1024px) {
   .contenedor-tareas {
-    max-width: 30%; /* Especifica un ancho máximo para PCs */
+    max-width: 40%; /* Especifica un ancho máximo para PCs */
   }
 }
