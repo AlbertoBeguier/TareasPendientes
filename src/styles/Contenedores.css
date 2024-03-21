@@ -31,100 +31,65 @@ button {
     flex-direction: column; /* Cambia a columna en pantallas pequeñas */
   }
 }
-
+/* Estilos base */
 .contenedor-tareas {
   border: 0.1em solid #3e499c;
   border-radius: 5px;
-  padding: 10px; /* Ajuste para hacer espacio para el título */
-  position: relative; /* Esto permite que el título se posicione relativamente a este contenedor */
-  margin: 20px auto; /* Centra el contenedor horizontalmente */
-  display: flex; /* Se agrega flex para alinear los botones en fila */
-  justify-content: center; /* Centra los botones horizontalmente */
-  flex-wrap: wrap; /* Permite que los botones se envuelvan si no caben */
-  width: auto; /* Ajusta automáticamente el ancho basado en el contenido */
-  max-width: 30%; /* Asegura que el contenedor no se extienda demasiado */
-  gap: 10px; /* Espacio entre botones, ajustable según necesidad */
+  padding: 10px;
+  position: relative;
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: auto;
+  max-width: 90%; /* Ajustado para ser más receptivo */
+  gap: 10px;
 }
 
 .titulo-tareas {
   position: absolute;
-  top: -16px; /* Ajusta este valor para mover el título hacia arriba o hacia abajo */
+  top: -16px;
   left: 50%;
-  transform: translateX(-50%); /* Centra el título exactamente en el medio */
+  transform: translateX(-50%);
   font-weight: 500;
   font-size: 0.9rem;
-  padding: 0 10px; /* Pequeño padding horizontal para el título */
+  padding: 0 10px;
   color: #3e499c;
 }
 
 .task-filters {
   display: flex;
-  flex-direction: row; /* Cambio clave para alinear los botones en fila */
-  gap: 10px; /* Espacio entre botones, ajustable según necesidad */
+  flex-direction: row;
+  gap: 10px;
 }
 
-.contenedor-excel {
-  padding: 20px;
-  background-color: rgb(174, 203, 207);
-  border: 1px solid #3e499c;
-  border-radius: 10px;
-}
-.contenedor-excel-1 {
-  padding: 20px;
-  margin: 20px;
-  background-color: rgb(213, 216, 216);
-  border: 1px solid #3e499c;
-  border-radius: 10px;
+/* Media Query para tabletas (pantallas medianas) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .contenedor-tareas {
+    max-width: 60%; /* Ajusta el ancho máximo para tabletas */
+  }
+  .titulo-tareas {
+    font-size: 1rem; /* Aumenta el tamaño del texto para tabletas */
+  }
 }
 
-.contenedor-excel-2 {
-  padding: 20px;
-  margin: 20px;
-  background-color: black;
-  border: 1px solid #3e499c;
-  border-radius: 10px;
+/* Media Query para móviles en orientación horizontal y vertical (pantallas pequeñas) */
+@media (max-width: 767px) {
+  .contenedor-tareas {
+    max-width: 100%; /* Ajusta el ancho máximo para móviles */
+    margin: 10px auto; /* Reduce el margen para móviles */
+  }
+  .titulo-tareas {
+    font-size: 0.8rem; /* Ajusta el tamaño del texto para móviles */
+  }
+  .task-filters {
+    flex-direction: column; /* Cambia la dirección a columna para los filtros en móviles */
+  }
 }
 
-.contenedor-liquidacion {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.boton-ExcelAJSon {
-  background-color: #3e499c;
-  color: white;
-  font-weight: 600;
-  border: none;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 5px;
-  border: 2px solid black; /* Borde Negro */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra gris */
-}
-.boton-ExcelAJSon1 {
-  background-color: orange;
-  color: black;
-  font-weight: bold;
-  border: none;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 5px;
-  border: 2px solid black; /* Borde Negro */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra gris */
-}
-.boton-ExcelAJSon1:disabled {
-  background-color: #cccccc;
-  color: #666666;
+/* Media Query para PCs (pantallas grandes) */
+@media (min-width: 1024px) {
+  .contenedor-tareas {
+    max-width: 30%; /* Especifica un ancho máximo para PCs */
+  }
 }
