@@ -213,6 +213,7 @@
   .tareas-pend-comp-tot {
     margin-left: 0; /* Elimina el margen izquierdo para alinear con el inicio */
     margin-top: 5px; /* Añade un pequeño margen superior para separar de otros elementos */
+    font-size: 16px;
   }
 
   .input-nueva-carpeta,
@@ -230,66 +231,7 @@
   .flex-row,
   .color-picker-container,
   .flex-container {
+    min-width: 0; /* Permite que los contenedores se ajusten al ancho del padre */
     flex-direction: column; /* Cambia la disposición a columna para los contenedores flex */
-  }
-  .task-item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Alinea los elementos al inicio para dispositivos móviles */
-  }
-
-  .task-text {
-    word-wrap: break-word;
-    max-width: 100%; /* Asegura que el texto no se desborde */
-  }
-
-  .flex-container {
-    display: flex;
-    width: 100%; /* Asegura que el contenedor flex ocupe todo el ancho disponible */
-    align-items: center; /* Alinea verticalmente los elementos */
-  }
-
-  .task-input {
-    width: calc(
-      100% - 40px
-    ); /* Ajusta el ancho del textarea restando el espacio que ocuparán los botones */
-    margin-right: 10px; /* Añade un margen derecho para separar el textarea de los botones */
-  }
-
-  .delete-icon-btn {
-    margin: 0 5px; /* Añade márgenes a los botones para asegurar espacio entre ellos */
-  }
-
-  /* Media Queries para dispositivos móviles en posición vertical */
-  @media (max-width: 768px) {
-    .task-item {
-      flex-direction: column;
-    }
-
-    .task-text,
-    .task-input {
-      word-wrap: break-word;
-      max-width: 100%;
-    }
-
-    .flex-container {
-      flex-direction: column; /* Cambia a dirección columna para apilar el textarea y los botones */
-    }
-
-    .delete-icon-btn {
-      margin: 2px 0; /* Ajusta los márgenes para dispositivos móviles */
-    }
-
-    /* Asegura que todos los elementos interactivos sean fáciles de tocar en una pantalla táctil */
-    .delete-icon-btn,
-    .completion-icon {
-      min-width: 44px; /* Tamaño mínimo recomendado para áreas táctiles */
-      min-height: 44px;
-      padding: 5px;
-    }
-
-    .delete-icon {
-      width: 20px; /* Ajusta el tamaño de los iconos para que no ocupen demasiado espacio */
-    }
   }
 }
