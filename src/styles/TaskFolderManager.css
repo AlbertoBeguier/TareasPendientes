@@ -102,12 +102,9 @@
   padding: 2px;
 }
 
-.color-picker-container input[type="color"] {
-  opacity: 0; /* Hace el input completamente transparente */
-  position: absolute; /* Posicionamiento absoluto para superponerlo sobre la imagen */
-  width: 48px; /* Ajusta este valor según el tamaño de tu imagen disparadora */
-  height: 48px; /* Ajusta este valor según el tamaño de tu imagen disparadora */
-  cursor: pointer; /* Mantiene el cursor como puntero para indicar interactividad */
+.color-picker-container {
+  display: flex;
+  align-items: center; /* Esto asegura que el contenido esté alineado verticalmente en el centro */
 }
 
 .color-picker-container label {
