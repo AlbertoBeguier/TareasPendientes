@@ -1,0 +1,130 @@
+.contenedor-carpetas {
+  position: relative;
+  display: flex; /* Cambiado de inline-flex a flex */
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Asegura que ocupe todo el ancho disponible */
+  flex-direction: column; /* Alinea los elementos en columna */
+  padding: 20px; /* Espaciado alrededor del contenido */
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row; /* Mantiene los elementos en fila */
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; /* Permite que los elementos se ajusten según el ancho */
+  width: 100%; /* Ocupa el ancho completo para ser más responsive */
+  gap: 10px; /* Espaciado entre elementos */
+}
+
+.titulos,
+.color-picker-container,
+input,
+button {
+  margin: 5px; /* Margen reducido para todos los elementos */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .flex-row {
+    flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+  }
+}
+
+.contenedor-tareas {
+  border: 0.1em solid #3e499c;
+  border-radius: 5px;
+  padding: 10px; /* Ajuste para hacer espacio para el título */
+  position: relative; /* Esto permite que el título se posicione relativamente a este contenedor */
+  margin: 20px auto; /* Centra el contenedor horizontalmente */
+  display: flex; /* Se agrega flex para alinear los botones en fila */
+  justify-content: center; /* Centra los botones horizontalmente */
+  flex-wrap: wrap; /* Permite que los botones se envuelvan si no caben */
+  width: auto; /* Ajusta automáticamente el ancho basado en el contenido */
+  max-width: 30%; /* Asegura que el contenedor no se extienda demasiado */
+  gap: 10px; /* Espacio entre botones, ajustable según necesidad */
+}
+
+.titulo-tareas {
+  position: absolute;
+  top: -16px; /* Ajusta este valor para mover el título hacia arriba o hacia abajo */
+  left: 50%;
+  transform: translateX(-50%); /* Centra el título exactamente en el medio */
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0 10px; /* Pequeño padding horizontal para el título */
+  color: #3e499c;
+}
+
+.task-filters {
+  display: flex;
+  flex-direction: row; /* Cambio clave para alinear los botones en fila */
+  gap: 10px; /* Espacio entre botones, ajustable según necesidad */
+}
+
+.contenedor-excel {
+  padding: 20px;
+  background-color: rgb(174, 203, 207);
+  border: 1px solid #3e499c;
+  border-radius: 10px;
+}
+.contenedor-excel-1 {
+  padding: 20px;
+  margin: 20px;
+  background-color: rgb(213, 216, 216);
+  border: 1px solid #3e499c;
+  border-radius: 10px;
+}
+
+.contenedor-excel-2 {
+  padding: 20px;
+  margin: 20px;
+  background-color: black;
+  border: 1px solid #3e499c;
+  border-radius: 10px;
+}
+
+.contenedor-liquidacion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.boton-ExcelAJSon {
+  background-color: #3e499c;
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid black; /* Borde Negro */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra gris */
+}
+.boton-ExcelAJSon1 {
+  background-color: orange;
+  color: black;
+  font-weight: bold;
+  border: none;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid black; /* Borde Negro */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra gris */
+}
+.boton-ExcelAJSon1:disabled {
+  background-color: #cccccc;
+  color: #666666;
+}
