@@ -10,7 +10,7 @@ export function TaskListManager({
   updateFolders,
 }) {
   const [newTask, setNewTask] = useState("");
-  const [editingIndex, setEditingIndex] = useState(-1);
+  const [editingTaskId, setEditingTaskId] = useState(null); // Cambiado para usar ID
   const [editText, setEditText] = useState("");
   const editTextareaRef = useRef(null);
   const [filter, setFilter] = useState("total");
@@ -31,14 +31,12 @@ export function TaskListManager({
     }
   }, [editText]);
 
-  //! TAREAS PENDIENTES - CAMBIO DE COLOR
   useEffect(() => {
     const pendingTasks = selectedFolder.tasks.filter(
       task => !task.completed
     ).length;
-    // Activa el efecto de cambio de color si hay tareas pendientes.
     setIsPendingButtonFlashing(pendingTasks > 0);
-  }, [selectedFolder.tasks]); // Se ejecuta cada vez que cambia la lista de tareas
+  }, [selectedFolder.tasks]);
 
   const showTotal = () => setFilter("total");
   const showPending = () => setFilter("pending");
@@ -50,8 +48,13 @@ export function TaskListManager({
     return true;
   });
 
+  function generateUniqueId() {
+    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  }
+
   const handleAddTask = () => {
     if (newTask.trim() !== "") {
+      const uniqueId = generateUniqueId();
       const currentDate = new Date();
       const formattedDate = `${currentDate
         .getDate()
@@ -59,14 +62,15 @@ export function TaskListManager({
         .padStart(2, "0")}/${(currentDate.getMonth() + 1)
         .toString()
         .padStart(2, "0")}/${currentDate.getFullYear()}`;
-      const taskWithDate = `${formattedDate} - ${newTask}`;
+      const taskWithDateAndId = {
+        id: uniqueId,
+        task: `${formattedDate} - ${newTask}`,
+        completed: false,
+      };
 
       const updatedFolder = {
         ...selectedFolder,
-        tasks: [
-          ...selectedFolder.tasks,
-          { task: taskWithDate, completed: false },
-        ],
+        tasks: [...selectedFolder.tasks, taskWithDateAndId],
       };
 
       const updatedFolders = [...taskFolders];
@@ -79,15 +83,15 @@ export function TaskListManager({
     }
   };
 
-  const handleEditTask = index => {
-    const task = selectedFolder.tasks[index];
-    setEditingIndex(index);
+  const handleEditTask = taskId => {
+    const task = selectedFolder.tasks.find(task => task.id === taskId);
+    setEditingTaskId(taskId);
     setEditText(task.task);
   };
 
   const handleSaveEdit = () => {
-    const updatedTasks = selectedFolder.tasks.map((task, index) => {
-      if (index === editingIndex) {
+    const updatedTasks = selectedFolder.tasks.map(task => {
+      if (task.id === editingTaskId) {
         return { ...task, task: editText };
       }
       return task;
@@ -100,17 +104,17 @@ export function TaskListManager({
     };
 
     updateFolders(updatedFolders);
-    setEditingIndex(-1);
+    setEditingTaskId(null);
     setEditText("");
   };
 
-  const handleDeleteTask = taskIndex => {
+  const handleDeleteTask = taskId => {
     const isConfirmed = window.confirm(
       "¿Estás seguro de que quieres eliminar esta tarea?"
     );
     if (isConfirmed) {
       const updatedTasks = selectedFolder.tasks.filter(
-        (_, index) => index !== taskIndex
+        task => task.id !== taskId
       );
       const updatedFolders = [...taskFolders];
       updatedFolders[selectedFolderIndex] = {
@@ -122,24 +126,28 @@ export function TaskListManager({
     }
   };
 
-  const toggleTaskCompletion = taskIndex => {
-    const updatedTasks = selectedFolder.tasks.map((task, index) => {
-      if (index === taskIndex) {
-        const currentDate = new Date();
-        const formattedDate = `${currentDate
-          .getDate()
-          .toString()
-          .padStart(2, "0")}/${(currentDate.getMonth() + 1)
-          .toString()
-          .padStart(2, "0")}/${currentDate.getFullYear()}`;
-
-        return {
-          ...task,
-          completed: !task.completed,
-          task: task.completed
-            ? task.task.split(" (Completada el ")[0]
-            : `${task.task} (Completada el ${formattedDate})`,
-        };
+  const toggleTaskCompletion = taskId => {
+    const updatedTasks = selectedFolder.tasks.map(task => {
+      if (task.id === taskId) {
+        const completed = !task.completed;
+        let taskUpdate = { ...task, completed };
+        if (completed) {
+          const currentDate = new Date();
+          const formattedDate = `${currentDate
+            .getDate()
+            .toString()
+            .padStart(2, "0")}/${(currentDate.getMonth() + 1)
+            .toString()
+            .padStart(2, "0")}/${currentDate.getFullYear()}`;
+          taskUpdate.task = `${task.task} (Completada el ${formattedDate})`;
+        } else {
+          // Si la tarea se está marcando como no completada, elimina la fecha de finalización
+          const taskParts = task.task.split(" (Completada el ");
+          if (taskParts.length > 1) {
+            taskUpdate.task = taskParts[0];
+          }
+        }
+        return taskUpdate;
       }
       return task;
     });
@@ -157,12 +165,14 @@ export function TaskListManager({
     <>
       <hr />
       <div className="contenedor-carpetas">
-        <h5 className="titulos">TAREAS EN {selectedFolderName}</h5>
+        <h5 className="titulos">
+          TAREAS EN {selectedFolderName.toUpperCase()}
+        </h5>
         <br />
         <div className="flex-container">
           <textarea
             value={newTask}
-            onChange={e => setNewTask(e.target.value.toUpperCase())}
+            onChange={e => setNewTask(e.target.value)}
             placeholder="Agregar nueva tarea"
             className="task-input"
           ></textarea>
@@ -172,32 +182,26 @@ export function TaskListManager({
         </div>
         <hr />
         <ol>
-          <hr />
-          {filteredTasks.map((task, index) => (
+          {filteredTasks.map(task => (
             <li
-              key={index}
+              key={task.id}
               className={`task-item ${task.completed ? "completed" : ""}`}
             >
-              {editingIndex === index ? (
-                <>
-                  <div className="flex-container">
-                    <textarea
-                      value={editText}
-                      onChange={e => setEditText(e.target.value)}
-                      className="task-input"
+              {editingTaskId === task.id ? (
+                <div className="flex-container">
+                  <textarea
+                    value={editText}
+                    onChange={e => setEditText(e.target.value)}
+                    className="task-input"
+                  />
+                  <button onClick={handleSaveEdit} className="delete-icon-btn">
+                    <img
+                      src="/disquete.png"
+                      alt="Guardar"
+                      className="delete-icon"
                     />
-                    <button
-                      onClick={handleSaveEdit}
-                      className="delete-icon-btn"
-                    >
-                      <img
-                        src="/disquete.png"
-                        alt="Guardar"
-                        className="delete-icon"
-                      />
-                    </button>
-                  </div>
-                </>
+                  </button>
+                </div>
               ) : (
                 <>
                   <div
@@ -210,12 +214,12 @@ export function TaskListManager({
                     className={`completion-icon ${
                       task.completed ? "completed" : ""
                     }`}
-                    onClick={() => toggleTaskCompletion(index)}
+                    onClick={() => toggleTaskCompletion(task.id)}
                   >
                     {task.completed ? "✔" : "⭕"}
                   </span>
                   <button
-                    onClick={() => handleEditTask(index)}
+                    onClick={() => handleEditTask(task.id)}
                     className="delete-icon-btn"
                   >
                     <img
@@ -225,7 +229,7 @@ export function TaskListManager({
                     />
                   </button>
                   <button
-                    onClick={() => handleDeleteTask(index)}
+                    onClick={() => handleDeleteTask(task.id)}
                     className="delete-icon-btn"
                   >
                     <img
@@ -234,9 +238,9 @@ export function TaskListManager({
                       className="delete-icon"
                     />
                   </button>
-                  <hr />
                 </>
               )}
+              <hr />
             </li>
           ))}
         </ol>
