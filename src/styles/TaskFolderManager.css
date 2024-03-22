@@ -218,7 +218,7 @@
 
   .input-nueva-carpeta,
   #new-folder-name {
-    width: 100%; /* Expande el input para usar todo el ancho disponible */
+    width: 80%; /* Expande el input para usar todo el ancho disponible */
   }
 
   .task-input {
@@ -233,5 +233,19 @@
   .flex-container {
     min-width: 0; /* Permite que los contenedores se ajusten al ancho del padre */
     flex-direction: column; /* Cambia la disposición a columna para los contenedores flex */
+  }
+}
+@media (max-width: 575px) {
+  .fecha-actual {
+    display: none; /* Esto asegura que la fecha se oculte en pantallas de hasta 575px de ancho */
+  }
+}
+
+@media (max-width: 500px) {
+  .delete-icon-btn,
+  .tareas-pend-comp-tot {
+    margin-left: 0; /* Elimina el margen izquierdo para alinear con el inicio */
+    margin-top: 5px; /* Añade un pequeño margen superior para separar de otros elementos */
+    font-size: 12px;
   }
 }
