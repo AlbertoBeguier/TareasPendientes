@@ -50,6 +50,19 @@ export function TaskFolderManager({
     setPendingColor(colors[colorIndex]);
   }, [colorIndex, colors]);
 
+  // Modificaciones aquí para gestionar el placeholder
+  const [placeholderText, setPlaceholderText] = useState("Nombrar carpeta"); // Estado para manejar el texto del placeholder
+
+  // Actualiza el placeholder al enfocar
+  const handleFocus = () => {
+    setPlaceholderText(""); // Vacía el texto del placeholder al enfocar
+  };
+
+  // Restaura el placeholder al perder el foco
+  const handleBlur = () => {
+    setPlaceholderText("Nombrar carpeta"); // Restaura el texto original del placeholder
+  };
+
   // Función para simular el clic en el input de color
   const triggerColorPicker = () => {
     document.getElementById("folder-color-picker").click();
@@ -67,7 +80,7 @@ export function TaskFolderManager({
       ];
       updateFolders(updatedFolders);
       setNewFolderName("");
-      setFolderColor("#3e499c"); // Resetea el color a naranja después de crear una carpeta
+      setFolderColor("#3e499c"); // Resetea el color a azul después de crear una carpeta
     }
   };
 
@@ -122,9 +135,11 @@ export function TaskFolderManager({
               id="new-folder-name"
               name="newFolderName"
               type="text"
-              placeholder="Nombrar carpeta"
+              placeholder={placeholderText} // Usa el estado para el texto del placeholder
               value={newFolderName}
               onChange={e => setNewFolderName(e.target.value)}
+              onFocus={handleFocus} // Añade el manejador de foco
+              onBlur={handleBlur} // Añade el manejador de pérdida de foco
               style={{ backgroundColor: folderColor }}
             />
             <button
