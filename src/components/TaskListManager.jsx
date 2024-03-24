@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import "../styles/TaskFolderManager.css";
 import "../styles/BotonesEstudio.css";
 import "../styles/Contenedores.css";
+import { useDeleteTask } from "../customHooks/useDeleteTask";
 
 export function TaskListManager({
   selectedFolderName,
@@ -22,6 +23,18 @@ export function TaskListManager({
     selectedFolderIndex !== -1
       ? taskFolders[selectedFolderIndex]
       : { tasks: [] };
+  const updateTasks = updatedTasks => {
+    const updatedFolders = taskFolders.map((folder, index) => {
+      if (index === selectedFolderIndex) {
+        return { ...folder, tasks: updatedTasks };
+      }
+      return folder;
+    });
+    updateFolders(updatedFolders);
+  };
+
+  // Usar el hook useDeleteTask con las tareas de la carpeta seleccionada y la función updateTasks
+  const deleteTask = useDeleteTask(selectedFolder.tasks, updateTasks);
 
   useEffect(() => {
     if (editTextareaRef.current) {
@@ -109,21 +122,8 @@ export function TaskListManager({
   };
 
   const handleDeleteTask = taskId => {
-    const isConfirmed = window.confirm(
-      "¿Estás seguro de que quieres eliminar esta tarea?"
-    );
-    if (isConfirmed) {
-      const updatedTasks = selectedFolder.tasks.filter(
-        task => task.id !== taskId
-      );
-      const updatedFolders = [...taskFolders];
-      updatedFolders[selectedFolderIndex] = {
-        ...selectedFolder,
-        tasks: updatedTasks,
-      };
-
-      updateFolders(updatedFolders);
-    }
+    // Simplemente llama a deleteTask con el ID de la tarea
+    deleteTask(taskId);
   };
 
   const toggleTaskCompletion = taskId => {

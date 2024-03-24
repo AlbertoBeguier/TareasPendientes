@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import "../styles/TaskFolderManager.css";
 import "../styles/Contenedores.css";
 import { useState, useEffect, useMemo } from "react";
-
+import { useDeleteFolder } from "../customHooks/useDeleteFolder"; // Importa el hook personalizado para mensaje al eliminar carpeta
 export function TaskFolderManager({
   taskFolders,
   updateFolders,
@@ -31,7 +31,8 @@ export function TaskFolderManager({
     ],
     []
   );
-
+  // Usar el hook personalizado para manejar la eliminación de carpetas
+  const handleDeleteFolder = useDeleteFolder(taskFolders, updateFolders);
   // Actualiza el color de la leyenda de tareas pendientes cuando el índice cambia
   useEffect(() => {
     const interval = setInterval(() => {
@@ -81,19 +82,6 @@ export function TaskFolderManager({
       updateFolders(updatedFolders);
       setNewFolderName("");
       setFolderColor("#3e499c"); // Resetea el color a azul después de crear una carpeta
-    }
-  };
-
-  // Función para eliminar una carpeta
-  const handleDeleteFolder = folderName => {
-    const isConfirmed = window.confirm(
-      "¿Estás seguro de que quieres eliminar esta carpeta?"
-    );
-    if (isConfirmed) {
-      const updatedFolders = taskFolders.filter(
-        folder => folder.name !== folderName
-      );
-      updateFolders(updatedFolders);
     }
   };
 

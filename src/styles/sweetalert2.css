@@ -1,0 +1,5 @@
+/* Estilos personalizados para SweetAlert2 */
+.swal2-title,
+swal2-content {
+  background-color: white !important;
+}
