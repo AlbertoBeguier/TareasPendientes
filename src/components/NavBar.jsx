@@ -2,7 +2,7 @@ import { useState } from "react";
 import logo from "../assets/logoEstudio.png"; // Asegúrate de que la ruta a tu imagen de logo es correcta
 import whatsappIcon from "/whatsapp.png"; // Asegúrate de que la ruta a tu imagen de WhatsApp es correcta
 import "../styles/NavBar.css"; // Asegúrate de que el camino al CSS es correcto
-import { obtenerFechaActual } from "../assets/fechaActual.js";
+import { obtenerFechaActual } from "../utilities/fechaActual.js";
 
 export const NavBar = () => {
   // Estado para controlar la visibilidad del botón y del elemento de contacto
