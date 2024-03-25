@@ -231,7 +231,7 @@ export function TaskListManager({
                   </div>
                   {/* Solo muestra la fecha de vencimiento si existe */}
                   {task.dueDate && (
-                    <div>Vencimiento: {formatDate(task.dueDate)}</div>
+                    <div>Vence el {formatDate(task.dueDate)}</div>
                   )}
                   <span
                     className={`completion-icon ${
