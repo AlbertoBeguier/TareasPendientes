@@ -3,6 +3,8 @@ import "../styles/TaskFolderManager.css";
 import "../styles/Contenedores.css";
 import { useState, useEffect, useMemo } from "react";
 import { useDeleteFolder } from "../customHooks/useDeleteFolder"; // Importa el hook personalizado para mensaje al eliminar carpeta
+import { comparaFechas } from "../utilities/comparaFechas"; // Importa la función para comparar fechas
+
 export function TaskFolderManager({
   taskFolders,
   updateFolders,
@@ -97,7 +99,6 @@ export function TaskFolderManager({
         <h5 className="titulos">CREAR CARPETA</h5>
         <div className="flex-row">
           <span className="color-picker-container">
-            {/* El input ahora está oculto y se activa al hacer clic en la imagen */}
             <input
               id="folder-color-picker"
               name="folderColor"
@@ -106,16 +107,13 @@ export function TaskFolderManager({
               onChange={e => setFolderColor(e.target.value)}
               style={{ display: "none" }} // Input oculto
             />
-            {/* Imagen que actúa como botón para el selector de color */}
             <img
               className="imagen-selector-color"
-              src="/selector-color.png" // Asegúrate de cambiar esto por la ruta correcta de tu imagen
+              src="/selector-color.png"
               alt="Seleccionar color"
               onClick={triggerColorPicker}
               onTouchEnd={triggerColorPicker}
-              style={{
-                cursor: "pointer" /* Estilos adicionales para la imagen */,
-              }}
+              style={{ cursor: "pointer" }}
             />
           </span>
           <span>
@@ -123,11 +121,11 @@ export function TaskFolderManager({
               id="new-folder-name"
               name="newFolderName"
               type="text"
-              placeholder={placeholderText} // Usa el estado para el texto del placeholder
+              placeholder={placeholderText}
               value={newFolderName}
               onChange={e => setNewFolderName(e.target.value)}
-              onFocus={handleFocus} // Añade el manejador de foco
-              onBlur={handleBlur} // Añade el manejador de pérdida de foco
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               style={{ backgroundColor: folderColor }}
             />
             <button
@@ -140,7 +138,6 @@ export function TaskFolderManager({
                 className="delete-icon-1"
               />
             </button>
-
             {folderExists && (
               <span className="advertencia-carpeta">La carpeta ya existe.</span>
             )}
@@ -153,12 +150,14 @@ export function TaskFolderManager({
         <br />
         <div>
           {taskFolders.map((folder, index) => {
-            // Nueva funcionalidad: Cálculo de tareas totales, completadas y pendientes por carpeta
             const totalTasks = folder.tasks.length;
             const completedTasks = folder.tasks.filter(
               task => task.completed
             ).length;
             const pendingTasks = totalTasks - completedTasks;
+            const taskStatus = folder.tasks
+              .map(task => comparaFechas(task.dueDate))
+              .find(status => status.message !== "");
 
             return (
               <div
@@ -169,11 +168,11 @@ export function TaskFolderManager({
                 <button
                   className="boton-carpetas"
                   style={{ backgroundColor: folder.color }}
-                  title={folder.name}
                   onClick={() => onFolderSelect(folder.name)}
                 >
                   {folder.name}
                 </button>
+
                 <button
                   className="delete-icon-btn"
                   onClick={() => handleDeleteFolder(folder.name)}
@@ -185,24 +184,30 @@ export function TaskFolderManager({
                     className="delete-icon"
                   />
                 </button>
+
                 <div style={{ marginLeft: "10px" }}>
                   <span
                     className="tareas-pend-comp-tot"
                     style={{
-                      transition: "color 2s ease", // Suaviza la transición de color
-                      color: pendingTasks !== 0 ? pendingColor : "#000000", // Cambia el color solo si hay tareas pendientes
+                      color: pendingTasks !== 0 ? pendingColor : "#000000",
                     }}
                   >
-                    {" "}
-                    Pendientes: {pendingTasks} -{" "}
+                    Pendientes: {pendingTasks} -
                   </span>
                   <span className="tareas-pend-comp-tot">
-                    Completadas: {completedTasks} -{" "}
+                    Completadas: {completedTasks} -
                   </span>
                   <span className="tareas-pend-comp-tot">
-                    {" "}
                     Totales: {totalTasks}
                   </span>
+                  {taskStatus && (
+                    <div
+                      className={`folder-due-status ${taskStatus.className}`}
+                      style={{ marginLeft: "10px" }}
+                    >
+                      {taskStatus.message}
+                    </div>
+                  )}
                 </div>
               </div>
             );

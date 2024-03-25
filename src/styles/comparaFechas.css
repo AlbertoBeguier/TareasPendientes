@@ -1,0 +1,74 @@
+@keyframes fondoArmonico {
+  0% {
+    background-color: orangered;
+    box-shadow: 1px 1px 1px 1px rgb(151, 150, 150);
+  }
+  50% {
+    background-color: orange;
+    box-shadow: 1px 1px 1px 1px rgb(34, 33, 33);
+  }
+  100% {
+    background-color: orangered;
+    box-shadow: 1px 1px 1px 1px rgb(151, 150, 150);
+  }
+}
+
+@keyframes fondoArmonico1 {
+  0% {
+    background-color: rgb(119, 119, 243);
+    box-shadow: 1px 1px 1px 1px rgb(34, 33, 33);
+  }
+  50% {
+    background-color: rgb(76, 76, 208);
+    box-shadow: 1px 1px 1px 1px rgb(151, 150, 150);
+  }
+  100% {
+    background-color: rgb(119, 119, 243);
+    box-shadow: 1px 1px 1px 1px rgb(34, 33, 33);
+  }
+}
+
+@keyframes fondoArmonico2 {
+  0% {
+    background-color: red;
+    box-shadow: 1px 1px 1px 1px rgb(34, 33, 33);
+  }
+  50% {
+    background-color: darkred;
+    box-shadow: 1px 1px 1px 1px rgb(151, 150, 150);
+  }
+  100% {
+    background-color: red;
+    box-shadow: 1px 1px 1px 1px rgb(34, 33, 33);
+  }
+}
+
+.tareas-vencen-hoy {
+  animation: fondoArmonico 7s infinite ease-in-out;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  color: white;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.tareas-vencen-mañana {
+  animation: fondoArmonico1 7s infinite ease-in-out;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  color: white;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.tareas-vencidas {
+  animation: fondoArmonico2 7s infinite ease-in-out;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  color: white;
+  font-weight: 500;
+  display: inline-block;
+}

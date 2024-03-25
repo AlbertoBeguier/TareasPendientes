@@ -173,6 +173,7 @@
 }
 .tareas-pend-comp-tot {
   font-weight: 600;
+  margin-right: 10px;
 }
 
 #folder-color-picker {
