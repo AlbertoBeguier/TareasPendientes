@@ -11,8 +11,10 @@ export function TaskListManager({
   updateFolders,
 }) {
   const [newTask, setNewTask] = useState("");
-  const [editingTaskId, setEditingTaskId] = useState(null); // Cambiado para usar ID
+  const [newTaskDueDate, setNewTaskDueDate] = useState(""); // Estado para la fecha de vencimiento de la nueva tarea
+  const [editingTaskId, setEditingTaskId] = useState(null);
   const [editText, setEditText] = useState("");
+  const [editDueDate, setEditDueDate] = useState(""); // Estado para editar la fecha de vencimiento
   const editTextareaRef = useRef(null);
   const [filter, setFilter] = useState("total");
   const [isPendingButtonFlashing, setIsPendingButtonFlashing] = useState(false);
@@ -79,6 +81,7 @@ export function TaskListManager({
         id: uniqueId,
         task: `${formattedDate} - ${newTask}`,
         completed: false,
+        dueDate: newTaskDueDate,
       };
 
       const updatedFolder = {
@@ -93,6 +96,7 @@ export function TaskListManager({
 
       updateFolders(updatedFolders);
       setNewTask("");
+      setNewTaskDueDate(""); // Restablece la fecha de vencimiento de la nueva tarea
     }
   };
 
@@ -100,12 +104,13 @@ export function TaskListManager({
     const task = selectedFolder.tasks.find(task => task.id === taskId);
     setEditingTaskId(taskId);
     setEditText(task.task);
+    setEditDueDate(task.dueDate || ""); // Establece la fecha de vencimiento para la edición
   };
 
   const handleSaveEdit = () => {
     const updatedTasks = selectedFolder.tasks.map(task => {
       if (task.id === editingTaskId) {
-        return { ...task, task: editText };
+        return { ...task, task: editText, dueDate: editDueDate };
       }
       return task;
     });
@@ -119,6 +124,7 @@ export function TaskListManager({
     updateFolders(updatedFolders);
     setEditingTaskId(null);
     setEditText("");
+    setEditDueDate("");
   };
 
   const handleDeleteTask = taskId => {
@@ -160,6 +166,12 @@ export function TaskListManager({
 
     updateFolders(updatedFolders);
   };
+  function formatDate(isoDateString) {
+    if (!isoDateString) return ""; // Retorna una cadena vacía si no hay fecha
+
+    const [year, month, day] = isoDateString.split("-");
+    return `${day}/${month}/${year}`;
+  }
 
   return (
     <>
@@ -194,6 +206,13 @@ export function TaskListManager({
                     onChange={e => setEditText(e.target.value)}
                     className="task-input"
                   />
+                  {/* Input para editar la fecha de vencimiento de una tarea existente */}
+                  <div>Vencimiento:</div>
+                  <input
+                    type="date"
+                    value={editDueDate}
+                    onChange={e => setEditDueDate(e.target.value)}
+                  />
                   <button onClick={handleSaveEdit} className="delete-icon-btn">
                     <img
                       src="/disquete.png"
@@ -210,6 +229,10 @@ export function TaskListManager({
                   >
                     {task.task}
                   </div>
+                  {/* Solo muestra la fecha de vencimiento si existe */}
+                  {task.dueDate && (
+                    <div>Vencimiento: {formatDate(task.dueDate)}</div>
+                  )}
                   <span
                     className={`completion-icon ${
                       task.completed ? "completed" : ""
