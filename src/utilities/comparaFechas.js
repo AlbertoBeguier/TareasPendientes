@@ -11,15 +11,15 @@ export function comparaFechas(dueDate) {
   // Convertir la diferencia a días
   const daysDifference = difference / (1000 * 60 * 60 * 24);
 
-  if (daysDifference < 0) {
+  if (daysDifference < -1) {
+    return { message: "Tareas vencidas", className: "tareas-vencidas" };
+  } else if (daysDifference < 0) {
     return { message: "Vencimientos hoy", className: "tareas-vencen-hoy" };
   } else if (daysDifference < 1) {
     return {
       message: "Vencimientos mañana",
       className: "tareas-vencen-mañana",
     };
-  } else if (daysDifference < -1) {
-    return { message: "Tareas vencidas", className: "tareas-vencidas" };
   } else {
     return { message: "", className: "" }; // Para fechas futuras sin acción específica
   }
