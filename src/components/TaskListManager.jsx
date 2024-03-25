@@ -16,7 +16,7 @@ export function TaskListManager({
   const [editText, setEditText] = useState("");
   const [editDueDate, setEditDueDate] = useState(""); // Estado para editar la fecha de vencimiento
   const editTextareaRef = useRef(null);
-  const [filter, setFilter] = useState("pending");
+  const [filter, setFilter] = useState("total");
   const [isPendingButtonFlashing, setIsPendingButtonFlashing] = useState(false);
   const selectedFolderIndex = taskFolders.findIndex(
     folder => folder.name === selectedFolderName

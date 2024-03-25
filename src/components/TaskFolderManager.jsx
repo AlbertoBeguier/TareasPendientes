@@ -156,9 +156,9 @@ export function TaskFolderManager({
             ).length;
             const pendingTasks = totalTasks - completedTasks;
             const taskStatus = folder.tasks
+              .filter(task => !task.completed) // Asegura que solo tareas no completadas sean consideradas
               .map(task => comparaFechas(task.dueDate))
               .find(status => status.message !== "");
-
             return (
               <div
                 key={index}
