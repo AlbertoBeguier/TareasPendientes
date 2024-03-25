@@ -207,8 +207,9 @@ export function TaskListManager({
                     className="task-input"
                   />
                   {/* Input para editar la fecha de vencimiento de una tarea existente */}
-                  <div>Vencimiento:</div>
+                  <div>Vence el</div>
                   <input
+                    className="fech-venc-input"
                     type="date"
                     value={editDueDate}
                     onChange={e => setEditDueDate(e.target.value)}
@@ -231,7 +232,9 @@ export function TaskListManager({
                   </div>
                   {/* Solo muestra la fecha de vencimiento si existe */}
                   {task.dueDate && (
-                    <div>Vence el {formatDate(task.dueDate)}</div>
+                    <div className="fech-venc">
+                      Vence el {formatDate(task.dueDate)}
+                    </div>
                   )}
                   <span
                     className={`completion-icon ${
