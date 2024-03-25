@@ -150,6 +150,7 @@
 }
 
 .delete-icon {
+  margin-left: 10px;
   width: 26px; /* o el tamaño que prefieras para tu icono */
   transition: transform 0.2s; /* Opcional: añade una transición suave para el hover */
 }
@@ -167,7 +168,9 @@
 .delete-icon-btn:hover .delete-icon-1 {
   transform: scale(1.3); /* Opcional: efecto de crecimiento al pasar el mouse */
 }
-
+.completion-icon {
+  margin-right: 10px;
+}
 .tareas-pend-comp-tot {
   font-weight: 600;
 }
@@ -244,7 +247,7 @@
 @media (max-width: 500px) {
   .delete-icon-btn,
   .tareas-pend-comp-tot {
-    margin-left: 0; /* Elimina el margen izquierdo para alinear con el inicio */
+    margin-left: 0px; /* Elimina el margen izquierdo para alinear con el inicio */
     margin-top: 5px; /* Añade un pequeño margen superior para separar de otros elementos */
     font-size: 12px;
   }
