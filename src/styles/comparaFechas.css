@@ -1,74 +1,49 @@
-@keyframes fondoArmonico {
-  0% {
-    background-color: orangered;
-    box-shadow: 1px 1px 1px 1px rgb(151, 150, 150);
+@keyframes slideBackground {
+  0%,
+  100% {
+    background-position: 100% 50%; /* Comienza y termina en los extremos */
   }
   50% {
-    background-color: orange;
-    box-shadow: 1px 1px 1px 1px rgb(34, 33, 33);
-  }
-  100% {
-    background-color: orangered;
-    box-shadow: 1px 1px 1px 1px rgb(151, 150, 150);
+    background-position: 0% 50%; /* En el punto medio, el fondo está en el centro */
   }
 }
 
-@keyframes fondoArmonico1 {
-  0% {
-    background-color: rgb(119, 119, 243);
-    box-shadow: 1px 1px 1px 1px rgb(34, 33, 33);
+@keyframes textColorChange {
+  0%,
+  100% {
+    color: #000; /* Color inicial */
+  }
+  25% {
+    color: rgb(119, 112, 100); /* Color intermedio */
   }
   50% {
-    background-color: rgb(76, 76, 208);
-    box-shadow: 1px 1px 1px 1px rgb(151, 150, 150);
+    color: #4b4847; /* Color en el punto medio */
   }
-  100% {
-    background-color: rgb(119, 119, 243);
-    box-shadow: 1px 1px 1px 1px rgb(34, 33, 33);
+  75% {
+    color: rgb(255, 255, 255); /* Regresa al color intermedio */
   }
 }
 
-@keyframes fondoArmonico2 {
-  0% {
-    background-color: red;
-    box-shadow: 1px 1px 1px 1px rgb(34, 33, 33);
-  }
-  50% {
-    background-color: darkred;
-    box-shadow: 1px 1px 1px 1px rgb(151, 150, 150);
-  }
-  100% {
-    background-color: red;
-    box-shadow: 1px 1px 1px 1px rgb(34, 33, 33);
-  }
-}
-
-.tareas-vencen-hoy {
-  animation: fondoArmonico 7s infinite ease-in-out;
-  border-radius: 5px;
-  margin: 10px;
-  padding: 10px;
-  color: white;
-  font-weight: 500;
-  display: inline-block;
-}
-
-.tareas-vencen-mañana {
-  animation: fondoArmonico1 7s infinite ease-in-out;
-  border-radius: 5px;
-  margin: 10px;
-  padding: 10px;
-  color: white;
-  font-weight: 500;
-  display: inline-block;
-}
-
+.tareas-vencen-hoy,
+.tareas-vencen-mañana,
 .tareas-vencidas {
-  animation: fondoArmonico2 7s infinite ease-in-out;
+  position: relative;
   border-radius: 5px;
-  margin: 10px;
-  padding: 10px;
-  color: white;
-  font-weight: 500;
+  margin: 5px;
+  padding: 5px;
+  font-weight: 700;
   display: inline-block;
+  font-size: 0.7rem;
+  border: 2px solid transparent; /* Asegura visibilidad en todos los fondos */
+  background-color: transparent; /* Fondo transparente */
+  background-image: linear-gradient(
+    to right,
+    transparent 25%,
+    orange 25%,
+    rgb(255, 38, 0) 75%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: slideBackground 15s infinite linear,
+    textColorChange 15s infinite linear;
 }

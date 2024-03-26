@@ -12,12 +12,12 @@ export function comparaFechas(dueDate) {
   const daysDifference = difference / (1000 * 60 * 60 * 24);
 
   if (daysDifference < -1) {
-    return { message: "Tareas vencidas", className: "tareas-vencidas" };
+    return { message: "TAREAS VENCIDAS", className: "tareas-vencidas" };
   } else if (daysDifference < 0) {
-    return { message: "Vencimientos hoy", className: "tareas-vencen-hoy" };
+    return { message: "VENCIMIENTOS HOY", className: "tareas-vencen-hoy" };
   } else if (daysDifference < 1) {
     return {
-      message: "Vencimientos mañana",
+      message: "VENCIMIENTOS MAÑANA",
       className: "tareas-vencen-mañana",
     };
   } else {
