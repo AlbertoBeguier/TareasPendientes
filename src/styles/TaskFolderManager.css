@@ -245,12 +245,18 @@
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 914px) {
   .delete-icon-btn,
   .tareas-pend-comp-tot {
     margin-left: 0px; /* Elimina el margen izquierdo para alinear con el inicio */
     margin-top: 5px; /* Añade un pequeño margen superior para separar de otros elementos */
     font-size: 12px;
+  }
+}
+@media (max-width: 830px) {
+  .folder-container {
+    flex-wrap: wrap; /* Permite que los elementos se ajusten en múltiples líneas según sea necesario */
+    justify-content: center; /* Centra los elementos en el contenedor */
   }
 }
 

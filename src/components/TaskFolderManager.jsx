@@ -185,7 +185,7 @@ export function TaskFolderManager({
                   />
                 </button>
 
-                <div style={{ marginLeft: "10px" }}>
+                <div className="container-tareas-y-vencimientos">
                   <span
                     className="tareas-pend-comp-tot"
                     style={{
