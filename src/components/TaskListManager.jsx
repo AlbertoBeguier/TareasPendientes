@@ -4,6 +4,8 @@ import "../styles/TaskFolderManager.css";
 import "../styles/BotonesEstudio.css";
 import "../styles/Contenedores.css";
 import { useDeleteTask } from "../customHooks/useDeleteTask";
+import { db } from "../firebase";
+import { collection, addDoc, doc, updateDoc, getDoc } from "firebase/firestore";
 
 export function TaskListManager({
   selectedFolderName,
@@ -11,13 +13,14 @@ export function TaskListManager({
   updateFolders,
 }) {
   const [newTask, setNewTask] = useState("");
-  const [newTaskDueDate, setNewTaskDueDate] = useState(""); // Estado para la fecha de vencimiento de la nueva tarea
+  const [newTaskDueDate, setNewTaskDueDate] = useState("");
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editText, setEditText] = useState("");
-  const [editDueDate, setEditDueDate] = useState(""); // Estado para editar la fecha de vencimiento
+  const [editDueDate, setEditDueDate] = useState("");
   const editTextareaRef = useRef(null);
   const [filter, setFilter] = useState("pending");
   const [isPendingButtonFlashing, setIsPendingButtonFlashing] = useState(false);
+
   const selectedFolderIndex = taskFolders.findIndex(
     folder => folder.name === selectedFolderName
   );
@@ -25,6 +28,7 @@ export function TaskListManager({
     selectedFolderIndex !== -1
       ? taskFolders[selectedFolderIndex]
       : { tasks: [] };
+
   const updateTasks = updatedTasks => {
     const updatedFolders = taskFolders.map((folder, index) => {
       if (index === selectedFolderIndex) {
@@ -35,8 +39,7 @@ export function TaskListManager({
     updateFolders(updatedFolders);
   };
 
-  // Usar el hook useDeleteTask con las tareas de la carpeta seleccionada y la función updateTasks
-  const deleteTask = useDeleteTask(selectedFolder.tasks, updateTasks);
+  const deleteTask = useDeleteTask(selectedFolder.tasks, updateTasks, selectedFolderName);
 
   useEffect(() => {
     if (editTextareaRef.current) {
@@ -67,13 +70,8 @@ export function TaskListManager({
     return true;
   });
 
-  function generateUniqueId() {
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-  }
-
-  const handleAddTask = () => {
+  const handleAddTask = async () => {
     if (newTask.trim() !== "") {
-      const uniqueId = generateUniqueId();
       const currentDate = new Date();
       const formattedDate = `${currentDate
         .getDate()
@@ -82,15 +80,17 @@ export function TaskListManager({
         .toString()
         .padStart(2, "0")}/${currentDate.getFullYear()}`;
       const taskWithDateAndId = {
-        id: uniqueId,
         task: `${formattedDate} - ${newTask}`,
         completed: false,
         dueDate: newTaskDueDate,
       };
 
+      // Añadir la tarea y obtener el ID autogenerado
+      const taskDocRef = await addDoc(collection(db, "taskFolders", selectedFolderName, "tasks"), taskWithDateAndId);
+
       const updatedFolder = {
         ...selectedFolder,
-        tasks: [...selectedFolder.tasks, taskWithDateAndId],
+        tasks: [...selectedFolder.tasks, { ...taskWithDateAndId, id: taskDocRef.id }],
       };
 
       const updatedFolders = [...taskFolders];
@@ -100,7 +100,7 @@ export function TaskListManager({
 
       updateFolders(updatedFolders);
       setNewTask("");
-      setNewTaskDueDate(""); // Restablece la fecha de vencimiento de la nueva tarea
+      setNewTaskDueDate("");
     }
   };
 
@@ -108,71 +108,91 @@ export function TaskListManager({
     const task = selectedFolder.tasks.find(task => task.id === taskId);
     setEditingTaskId(taskId);
     setEditText(task.task);
-    setEditDueDate(task.dueDate || ""); // Establece la fecha de vencimiento para la edición
+    setEditDueDate(task.dueDate || "");
   };
 
-  const handleSaveEdit = () => {
-    const updatedTasks = selectedFolder.tasks.map(task => {
-      if (task.id === editingTaskId) {
-        return { ...task, task: editText, dueDate: editDueDate };
-      }
-      return task;
-    });
+  const handleSaveEdit = async () => {
+    const taskDocRef = doc(db, "taskFolders", selectedFolderName, "tasks", editingTaskId);
+    const taskDoc = await getDoc(taskDocRef);
 
-    const updatedFolders = [...taskFolders];
-    updatedFolders[selectedFolderIndex] = {
-      ...selectedFolder,
-      tasks: updatedTasks,
-    };
+    if (taskDoc.exists()) {
+      await updateDoc(taskDocRef, {
+        task: editText,
+        dueDate: editDueDate,
+      });
 
-    updateFolders(updatedFolders);
-    setEditingTaskId(null);
-    setEditText("");
-    setEditDueDate("");
-  };
-
-  const handleDeleteTask = taskId => {
-    // Simplemente llama a deleteTask con el ID de la tarea
-    deleteTask(taskId);
-  };
-
-  const toggleTaskCompletion = taskId => {
-    const updatedTasks = selectedFolder.tasks.map(task => {
-      if (task.id === taskId) {
-        const completed = !task.completed;
-        let taskUpdate = { ...task, completed };
-        if (completed) {
-          const currentDate = new Date();
-          const formattedDate = `${currentDate
-            .getDate()
-            .toString()
-            .padStart(2, "0")}/${(currentDate.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}/${currentDate.getFullYear()}`;
-          taskUpdate.task = `${task.task} (Completada el ${formattedDate})`;
-        } else {
-          // Si la tarea se está marcando como no completada, elimina la fecha de finalización
-          const taskParts = task.task.split(" (Completada el ");
-          if (taskParts.length > 1) {
-            taskUpdate.task = taskParts[0];
-          }
+      const updatedTasks = selectedFolder.tasks.map(task => {
+        if (task.id === editingTaskId) {
+          return { ...task, task: editText, dueDate: editDueDate };
         }
-        return taskUpdate;
-      }
-      return task;
-    });
+        return task;
+      });
 
-    const updatedFolders = [...taskFolders];
-    updatedFolders[selectedFolderIndex] = {
-      ...selectedFolder,
-      tasks: updatedTasks,
-    };
+      const updatedFolders = [...taskFolders];
+      updatedFolders[selectedFolderIndex] = {
+        ...selectedFolder,
+        tasks: updatedTasks,
+      };
 
-    updateFolders(updatedFolders);
+      updateFolders(updatedFolders);
+      setEditingTaskId(null);
+      setEditText("");
+      setEditDueDate("");
+    } else {
+      console.error("No se encontró el documento para actualizar");
+      // Puedes manejar el error de manera más visible aquí si lo necesitas.
+    }
   };
-  function formatDate(isoDateString) {
-    if (!isoDateString) return ""; // Retorna una cadena vacía si no hay fecha
 
+  const toggleTaskCompletion = async taskId => {
+    const taskDocRef = doc(db, "taskFolders", selectedFolderName, "tasks", taskId);
+    const taskDoc = await getDoc(taskDocRef);
+
+    if (taskDoc.exists()) {
+      const updatedTasks = selectedFolder.tasks.map(task => {
+        if (task.id === taskId) {
+          const completed = !task.completed;
+          let taskUpdate = { ...task, completed };
+          if (completed) {
+            const currentDate = new Date();
+            const formattedDate = `${currentDate
+              .getDate()
+              .toString()
+              .padStart(2, "0")}/${(currentDate.getMonth() + 1)
+              .toString()
+              .padStart(2, "0")}/${currentDate.getFullYear()}`;
+            taskUpdate.task = `${task.task} (Completada el ${formattedDate})`;
+          } else {
+            const taskParts = task.task.split(" (Completada el ");
+            if (taskParts.length > 1) {
+              taskUpdate.task = taskParts[0];
+            }
+          }
+          return taskUpdate;
+        }
+        return task;
+      });
+
+      await updateDoc(taskDocRef, {
+        completed: updatedTasks.find(task => task.id === taskId).completed,
+        task: updatedTasks.find(task => task.id === taskId).task,
+      });
+
+      const updatedFolders = [...taskFolders];
+      updatedFolders[selectedFolderIndex] = {
+        ...selectedFolder,
+        tasks: updatedTasks,
+      };
+
+      updateFolders(updatedFolders);
+    } else {
+      console.error("No se encontró el documento para actualizar");
+      // Manejar el error según sea necesario
+    }
+  };
+
+  function formatDate(isoDateString) {
+    if (!isoDateString) return "";
     const [year, month, day] = isoDateString.split("-");
     return `${day}/${month}/${year}`;
   }
@@ -210,7 +230,6 @@ export function TaskListManager({
                     onChange={e => setEditText(e.target.value)}
                     className="task-input"
                   />
-                  {/* Input para editar la fecha de vencimiento de una tarea existente */}
                   <div>Vence el</div>
                   <input
                     className="fech-venc-input"
@@ -234,7 +253,6 @@ export function TaskListManager({
                   >
                     {task.task}
                   </div>
-                  {/* Solo muestra la fecha de vencimiento si existe */}
                   {task.dueDate && (
                     <div className="fech-venc">
                       Vence el {formatDate(task.dueDate)}
@@ -259,7 +277,7 @@ export function TaskListManager({
                     />
                   </button>
                   <button
-                    onClick={() => handleDeleteTask(task.id)}
+                    onClick={() => deleteTask(task.id)}
                     className="delete-icon-btn"
                   >
                     <img

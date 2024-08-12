@@ -23,7 +23,7 @@ export const NavBar = () => {
   };
 
   return (
-    <div>
+    <>
       <nav className="navbar navbar-expand-lg justify-content-center">
         {/* Logo del estudio */}
         <span className="navbar-brand">
@@ -54,6 +54,6 @@ export const NavBar = () => {
           <span className="fecha-actual"> {obtenerFechaActual()}</span>
         )}
       </nav>
-    </div>
+    </>
   );
 };
