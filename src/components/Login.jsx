@@ -1,4 +1,5 @@
-import  { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 export function Login({ setUser }) {
@@ -43,4 +44,9 @@ export function Login({ setUser }) {
     </div>
   );
 }
+
+Login.propTypes = {
+  setUser: PropTypes.func.isRequired,
+};
+
 
