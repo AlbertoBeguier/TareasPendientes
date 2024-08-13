@@ -62,7 +62,7 @@ export const NavBar = ({ user }) => {
         {/* Botón de Logout solo visible cuando el usuario está logueado */}
         {user && (
           <button className="btn btn-danger ml-auto" onClick={handleLogout}>
-            Logout
+            LOGOUT
           </button>
         )}
       </nav>

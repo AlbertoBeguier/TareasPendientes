@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import "../styles/Login.css";
 
 export function Login({ setUser }) {
   const [email, setEmail] = useState('');
@@ -19,27 +20,25 @@ export function Login({ setUser }) {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Login</button>
+    <div className="login-container">
+      <form className="login-form" onSubmit={handleLogin}>
+        <p className="acceso-sistema">ACCESO AL SISTEMA</p>
+        <input
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          placeholder="usuario"
+          autoComplete="email"
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          placeholder="Password"
+          autoComplete="current-password"
+        />
+        <button type="submit">LOGIN</button>
+        {error && <div className="error">{error}</div>}
       </form>
     </div>
   );
