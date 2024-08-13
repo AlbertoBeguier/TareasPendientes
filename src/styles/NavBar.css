@@ -29,6 +29,30 @@
   border: 2px solid rgb(196, 194, 194); /* Borde Negro */
 }
 
+.logout {
+  background-color: orangered;
+  color: black;
+  font-weight: 600;
+  border: none;
+  padding: 5px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid #3e499c; /* Borde Negro */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra gris */
+  text-decoration: none;
+}
+.logout:hover {
+  color: white; /* Color del texto al pasar el cursor */
+  background-color: black; /* Color de fondo al pasar el cursor */
+  text-decoration: none;
+  border: 2px solid rgb(196, 194, 194); /* Borde Negro */
+}
+
 .whatsapp-icon {
   width: 30px; /* o el tamaño que prefieras para tu icono */
 }

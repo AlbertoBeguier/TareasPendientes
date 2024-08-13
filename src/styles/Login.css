@@ -59,7 +59,7 @@
 .login-form .error {
   color: red;
   margin-top: 10px;
-  font-size: 20px; /* Tamaño de fuente más grande */
+  font-size: 18px; /* Tamaño de fuente más grande */
   font-weight: 600;
   white-space: nowrap; /* Evita el salto de línea */
   text-align: center; /* Centra el texto */

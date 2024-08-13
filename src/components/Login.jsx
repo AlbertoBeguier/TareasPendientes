@@ -15,7 +15,8 @@ export function Login({ setUser }) {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       setUser(userCredential.user);
     } catch (error) {
-      setError(error.message);
+      // Personaliza el mensaje de error
+      setError("Usuario o contraseña incorrectos");
     }
   };
 
